@@ -2,15 +2,11 @@
 
 import React from 'react';
 import Hello from './Hello';
+import InputSample from './InputSample';
 import Wrapper from './Wrapper';
 
 const App = () => {
-  return (
-    <Wrapper>
-      <Hello name="react" color="blue" isSpecial />
-      <Hello color="pink" />
-    </Wrapper>
-  );
+  return <InputSample />;
 };
 
 export default App;
