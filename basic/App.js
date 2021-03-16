@@ -7,7 +7,7 @@ import Wrapper from './Wrapper';
 const App = () => {
   return (
     <Wrapper>
-      <Hello name="react" color="blue" />
+      <Hello name="react" color="blue" isSpecial />
       <Hello color="pink" />
     </Wrapper>
   );
