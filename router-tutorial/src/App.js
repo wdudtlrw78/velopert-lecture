@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import About from './About';
 import HistorySample from './HistorySample';
 import Home from './Home';
@@ -23,10 +23,12 @@ function App() {
         </li>
       </ul>
       <hr />
-      <Route path="/" exact component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/profiles" component={Profiles} />
-      <Route path="/history" component={HistorySample} />
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/profiles" component={Profiles} />
+        <Route path="/history" component={HistorySample} />
+      </Switch>
     </div>
   );
 }
