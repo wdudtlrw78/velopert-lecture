@@ -26,7 +26,7 @@ export default function counter(state = initialState, action) {
     case DECREASE:
       return {
         ...state,
-        number: state.number - state.dfiff
+        number: state.number - state.diff
       }
     default:
       return state;
