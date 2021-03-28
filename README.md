@@ -80,3 +80,42 @@ function middleware(store) {
 }
 ```
 ![Redux middleware](/images/2.png) 
+<br>
+**- redux-logger -**
+```
+import logger from 'redux-logger';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(logger)));
+```
+<br>
+
+**- redux-thunk -**
+- <b>액션 객체</b>가 아닌 <b>함수</b>를 디스패치 할 수 있다.
+```
+const thunk = store => next => action =>
+  typeof action === 'function'
+    ? action(store.dispatch, store.getState)
+    : next(action)
+```
+이를 활용하여
+- thunk function
+```
+const getComments = () => (dispatch, getState) => {
+  // 이 안에서는 액션을 dispatch 할 수도 있고
+  // getState를 사용하여 현재 상태도 조회 할 수 있다.
+  const id = getState().post.activeId;
+
+  // 요청이 시작했음을 알리는 액션
+  dispatch({ type: 'GET_COMMENTS' });
+
+  // 댓글을 조회하는 프로미스를 반환하는 getComments 가 있다고 가정
+  api
+    .getComments(id) // 요청을하고
+    .then(comments => dispatch({ type: 'GET_COMMENTS_SUCCESS', id, comments })) // 성공시
+    .catch(e => dispatch({ type: 'GET_COMMENTS_ERROR', error: e })) // 실패시
+};
+
+// 컴포넌트에서
+dispatch(getComments());
+```

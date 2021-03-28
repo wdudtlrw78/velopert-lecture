@@ -1,3 +1,4 @@
+// 미들웨어 직접 만듬
 const myLogger = store => next => action => {
   console.log(action); // 액션이 디스패치할 때 콘솔에 출력
   console.log('\tPrev',store.getState()) // next 전
