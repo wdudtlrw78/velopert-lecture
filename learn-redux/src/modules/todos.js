@@ -26,8 +26,7 @@ export default function todos(state = initialState, action) {
       return state.map(
         todo => todo.id === action.id
           ? { ...todo, done: !todo.done} : todo
-      );
-    
+      ); 
     default:
       return state;
   }
