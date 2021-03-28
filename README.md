@@ -63,3 +63,20 @@ function counter(state, action) {
 **- 컨테이너와 프리젠테이셔널 컴포넌트 분리 -**
 <br>
 ![Redux](/images/Redux.png) 
+<br>
+<br>
+**- Redux middleWare -**
+```
+const middleware = store => next => action => {
+  // 하고싶은 작업
+}
+
+function middleware(store) {
+  return function (next) {
+    return function (action) {
+      // 하고싶은 작업
+    }
+  }
+}
+```
+![Redux middleware](/images/2.png) 
