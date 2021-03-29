@@ -5,16 +5,29 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './modules';
+import rootReducer, { rootSaga } from './modules';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReduxThunk from 'redux-thunk';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import createSagaMiddleware from 'redux-saga';
 
 const customHistory = createBrowserHistory();
+const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk.withExtraArgument({ history: customHistory}), logger))); // logger가 맨 뒤에 있어야한다. 안그러면 함수도 액션으로 감지하기 때문
+const store = createStore(
+  rootReducer, 
+  composeWithDevTools(
+    applyMiddleware(
+      ReduxThunk.withExtraArgument({ history: customHistory}), 
+      sagaMiddleware,
+      logger
+    )
+  )
+); // logger가 맨 뒤에 있어야한다. 안그러면 함수도 액션으로 감지하기 때문
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Router history={customHistory}>

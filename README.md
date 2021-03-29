@@ -119,3 +119,47 @@ const getComments = () => (dispatch, getState) => {
 // 컴포넌트에서
 dispatch(getComments());
 ```
+<br>
+
+**- redux-saga -**
+- 액션을 모니터링
+- 비동기 작업을 진행 할 때 기존 요청을 취소 할 수 있다.
+- 특정 액션이 발생 했을 때 이에 따라 다른 액션을 디스패치 하거나 자바스크립트 코드를 실행 할 수 있다.
+- 웹소켓을 사용하는 경우 Channel 이라는 기능을 사용하여 더욱 효율적으로 코드를 관리 할 수 있다.
+- 비동기 작업이 실패 했을 때 재시도 하는 기능을 구현 할 수 있다.
+- 등 다양한 비동기 작업을 할 수 있다.
+
+<b> Generator ! </b>
+- 함수의 흐름을 특정 구간에 멈춰놓았다가 `yield` 다시 실행 `next()` 할 수 있다.
+- 결과값을 여러번 내보낼 수 있다.
+```
+function* generatorFunction() {
+  console.log('test1');
+  yield 1;
+  console.log('test2');
+  yield 2;
+  console.log('function*');
+  yield 3;
+  return 4;
+}
+```
+```
+function* inifniteAddGenerator() {
+    let result = 0;
+    while(true) {
+        result += yield result;
+    }
+}
+undefined
+ const add = inifniteAddGenerator();
+undefined
+add.next();
+{value: 0, done: false}
+add.next(10);
+{value: 10, done: false}
+add.next(20);
+{value: 30, done: false}
+add.next(30);
+무한...
+```
+- redux-saga는 `Generator`에 기반한 미들웨어
