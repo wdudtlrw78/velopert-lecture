@@ -1,0 +1,24 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "test1",
+      "body": "test1"
+    },
+    {
+      "id": 2,
+      "title": "test2",
+      "body": "test2"
+    },
+    {
+      "id": 3,
+      "title": "test3",
+      "body": "test3"
+    },
+    {
+      "title": "안녕하세여",
+      "body": "새로운정보",
+      "id": 5
+    }
+  ]
+}
