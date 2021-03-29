@@ -1,6 +1,6 @@
 import * as postsAPI from '../api/posts';
 import { createPromiseSaga, createPromiseSagaById, createPromiseThunk, createPromiseThunkById, handleAsyncActions, handleAsyncActionsById, reducerUtils } from '../lib/asyncUtils';
-import { call, put, takeEvery, getContext } from 'redux-saga/effects';
+import { call, put, takeEvery, getContext, select } from 'redux-saga/effects';
 
 // getPosts
 const GET_POSTS = 'posts/GET_POSTS';
@@ -16,6 +16,8 @@ const GO_TO_HOME = 'GO_TO_HOME';
 
 const CLEAR_POST = 'CLEAR_POST'
 
+const PRINT_STATE = 'PRINT_STATE';
+
 // // thunk function
 // export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
 // export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPostById);
@@ -28,6 +30,8 @@ export const getPost = (id) => ({
   meta: id,
 });
 
+export const printState = () => ({ type: PRINT_STATE });
+
 const getPostsSaga = createPromiseSaga(GET_POSTS, postsAPI.getPosts);
 const getPostSaga = createPromiseSagaById(GET_POST, postsAPI.getPostById);
 
@@ -36,6 +40,7 @@ export function* postsSaga() {
   yield takeEvery(GET_POSTS, getPostsSaga);
   yield takeEvery(GET_POST, getPostSaga);
   yield takeEvery(GO_TO_HOME, goToHomeSaga);
+  yield takeEvery(PRINT_STATE, printStateSaga);
 }
 
 function* goToHomeSaga() {
@@ -43,8 +48,14 @@ function* goToHomeSaga() {
   history.push('/');
 }
 
+// 상태 조회하기
+function* printStateSaga() {
+  const state = yield select(state => state.posts);
+  console.log(state);
+}
+
 // Thunk
-// export const goToHom = () => (dispatch, getState, {history}) => {
+// export const goToHome = () => (dispatch, getState, {history}) => {
 //   history.push('/');
 // }
 
