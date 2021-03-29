@@ -132,6 +132,7 @@ dispatch(getComments());
 <b> Generator ! </b>
 - 함수의 흐름을 특정 구간에 멈춰놓았다가 `yield` 다시 실행 `next()` 할 수 있다.
 - 결과값을 여러번 내보낼 수 있다.
+- redux-saga는 `Generator`에 기반한 미들웨어
 ```
 function* generatorFunction() {
   console.log('test1');
@@ -162,4 +163,3 @@ add.next(20);
 add.next(30);
 무한...
 ```
-- redux-saga는 `Generator`에 기반한 미들웨어

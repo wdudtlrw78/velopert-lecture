@@ -1,6 +1,6 @@
 import * as postsAPI from '../api/posts';
-import { createPromiseThunk, createPromiseThunkById, handleAsyncActions, handleAsyncActionsById, reducerUtils } from '../lib/asyncUtils';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { createPromiseSaga, createPromiseSagaById, createPromiseThunk, createPromiseThunkById, handleAsyncActions, handleAsyncActionsById, reducerUtils } from '../lib/asyncUtils';
+import { call, put, takeEvery, getContext } from 'redux-saga/effects';
 
 // getPosts
 const GET_POSTS = 'posts/GET_POSTS';
@@ -11,6 +11,8 @@ const GET_POSTS_ERROR = 'posrs/GET_POSTS_ERROR';
 const GET_POST = 'posts/GET_POST';
 const GET_POST_SUCCESS = 'posts/GET_POST_SUCCESS';
 const GET_POST_ERROR = 'posts/GET_POST_ERROR';
+
+const GO_TO_HOME = 'GO_TO_HOME';
 
 const CLEAR_POST = 'CLEAR_POST'
 
@@ -26,51 +28,28 @@ export const getPost = (id) => ({
   meta: id,
 });
 
-function* getPostsSaga() {
-  try {
-    const posts = yield call(postsAPI.getPosts);
-    yield put({
-      type: GET_POSTS_SUCCESS,
-      payload: posts,
-    })
-  } catch(e) {
-    yield put({
-      type: GET_POSTS_ERROR,
-      payload: e,
-      error: true,
-    })
-  }
-}
-
-function* getPostSaga(action) {
-  const id = action.payload;
-  try {
-    const post = yield call(postsAPI.getPostById, id);
-    yield put({
-      type: GET_POST_SUCCESS,
-      payload: post,
-      meta: id,
-    })
-  } catch (e) {
-    yield put({
-      type: GET_POST_ERROR,
-      payload: e,
-      error: true,
-      meta: id,
-    })
-  }
-}
+const getPostsSaga = createPromiseSaga(GET_POSTS, postsAPI.getPosts);
+const getPostSaga = createPromiseSagaById(GET_POST, postsAPI.getPostById);
 
 // 모니터링 작업
 export function* postsSaga() {
   yield takeEvery(GET_POSTS, getPostsSaga);
   yield takeEvery(GET_POST, getPostSaga);
+  yield takeEvery(GO_TO_HOME, goToHomeSaga);
 }
 
-
-export const goToHom = () => (dispatch, getState, {history}) => {
+function* goToHomeSaga() {
+  const history = yield getContext('history');
   history.push('/');
 }
+
+// Thunk
+// export const goToHom = () => (dispatch, getState, {history}) => {
+//   history.push('/');
+// }
+
+// Saga
+export const goToHome = () => ({ type: GO_TO_HOME })
 
 
 export const clearPost = () => ({ type: CLEAR_POST });
@@ -83,7 +62,6 @@ const initialState = {
 // 3번째 para(true) = 로딩중에 데이터를 초기화하지않겠다 기존 데이터있으면 재사용하겠다.
 const getPostsReducer = handleAsyncActions(GET_POSTS, 'posts', true);
 const getPostReducer = handleAsyncActionsById(GET_POST, 'post', true);
-
 
 export default function posts(state = initialState, action) {
   switch(action.type) {
