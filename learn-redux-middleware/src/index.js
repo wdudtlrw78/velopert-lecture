@@ -9,16 +9,19 @@ import rootReducer from './modules';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReduxThunk from 'redux-thunk';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk, logger))); // logger가 맨 뒤에 있어야한다. 안그러면 함수도 액션으로 감지하기 때문
+const customHistory = createBrowserHistory();
+
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk.withExtraArgument({ history: customHistory}), logger))); // logger가 맨 뒤에 있어야한다. 안그러면 함수도 액션으로 감지하기 때문
 
 ReactDOM.render(
-  <BrowserRouter>
+  <Router history={customHistory}>
     <Provider store={store}>
       <App />
     </Provider>
-  </BrowserRouter>,
+  </Router>,
   document.getElementById('root')
 );
 
