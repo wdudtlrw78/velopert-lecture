@@ -1,4 +1,4 @@
-import { delay, put, takeEvery, takeLatest } from 'redux-saga/effects'; // 미들웨어를 수행하도록 작업을 명령 = delay = 몇 초동안 기다려라 / put = 특정 액션을 dispatch 명령
+import { delay, put, takeEvery, takeLatest, takeLeading } from 'redux-saga/effects'; // 미들웨어를 수행하도록 작업을 명령 = delay = 몇 초동안 기다려라 / put = 특정 액션을 dispatch 명령
 
 const INCREASE = 'counter/INCREASE';
 const DECREASE = 'counter/DECREASE';
@@ -7,6 +7,8 @@ const DECREASE_ASYNC = 'counter/DECREASE_ASYNC';
 
 export const increase = () => ({ type: INCREASE });
 export const decrease = () => ({ type: DECREASE });
+
+// Saga
 export const increaseAsync = () => ({ type: INCREASE_ASYNC })
 export const decreaseAsync = () => ({ type: DECREASE_ASYNC });
 
