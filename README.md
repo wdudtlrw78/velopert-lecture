@@ -1,5 +1,40 @@
 ## 학습내용 정리
 
+### Webpack
+
+<b>- Module의 정의 -</b>
+- 프로그램을 구성하는 내부의 코드가 기능별로 나뉘어져 있는 형태
+
+<b>- Module의 표준 -</b>
+1. CommonJs (Node.js)
+2. ESM ( ECMAScript 2015 ~ )
+
+Module Keyword : 가져오기
+- CommonJs
+  - `require` ( 모듈의 경로 )
+
+- ESM
+  - `import` 모듈_이름 from 모듈_위치
+
+Module Keyword : 내보내기
+- CommonJs
+  - `module.exports` = {...}, 
+  `module.exports` = 값, 
+  `modue.exports.키_이름` = 값, 
+  `exports.키_이름` = 값
+
+- ESM
+  - `export`
+    `export default`
+
+`npm i esm`은 nodeJs는 기본적으로 commonJs 형태이기 때문에 esm 모듈 설치
+`npm -r esm index.js` -r 은 node 명령어 실행할 때 commonJs 표준말고 다른 모듈 표준도 설정할 수 있게 해준다.
+
+<b>- Modeule의 종류 -</b>
+1. Bulit-in Core Module ( 예: Node.js module )
+2. Community-based Module ( 예: NPM )
+3. Local Module ( 특정 프로젝트에 정의된 모듈 )
+
 ### Redux
 
 **- keyword**
@@ -62,7 +97,7 @@ function counter(state, action) {
 
 **- 컨테이너와 프리젠테이셔널 컴포넌트 분리 -**
 <br>
-![Redux](/images/Redux.png) 
+![Redux](/images/Redux.PNG) 
 <br>
 <br>
 **- Redux middleWare -**
