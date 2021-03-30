@@ -35,12 +35,50 @@ Module Keyword : 내보내기
 2. Community-based Module ( 예: NPM )
 3. Local Module ( 특정 프로젝트에 정의된 모듈 )
 
+<b>- Bundle -</b>
+- 서로 참조관계 있는 모듈들을 모아서 하나의 파일로 묶는 것을 Bundle이다.
+- 모듈들의 의존성을 안전하게 유지시키면서 하나의 파일로 만드는 과정
+
+
+**Bundle이 중요한이유**
+1. 모든 모듈을 로드하기 위해 검색하는 시간이 단축된다.
+2. 사용하지 않는 코드를 제거해준다.
+3. 파일의 크기를 줄여준다.
+
+**Webpack**
+
+Entry & Output
+
+Entry
+- 모듈의 의존 관계를 이해하기 위한 시작점을 설정
+
+Output
+- Webpack이 생성하는 번들 파일에 대한 정보를 설정
+
+기본 구조
+1. 의존성 관계 포함된 src 폴더와 dist 폴더 분리
+2. `npx webpack --target=node`
+3.  dist 폴더에 main.js파일 생성
+
+```
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+  target: 'node'
+}
+```
+
 ### Redux
 
 **- keyword**
 - `Action` : 어떻게 업데이트를 하는지 정의하는 객체
   - `type`값 필수
-```
+```logResult
 ex)
 {
   type: "ADD_TODO",
