@@ -45,7 +45,7 @@ Module Keyword : 내보내기
 2. 사용하지 않는 코드를 제거해준다.
 3. 파일의 크기를 줄여준다.
 
-**Webpack**
+**- Webpack -**
 
 Entry & Output
 
@@ -60,19 +60,22 @@ Output
 2. `npx webpack --target=node`
 3.  dist 폴더에 main.js파일 생성
 
-```
-const path = require('path');
+**Mode**
+1. Package.json
+- `dependencies` : 어플리케이션 내부에 직접 포함되는 모듈 ( `--save` )
+- `devDependencies` : 개발 과정에 필요한 모듈 ( `--save-dev` )
+2. 개발환경과 프로덕션 환경
+3. Mode & Webpack-merge
 
+**Loader**
+- 다양한 모듈들을 입력받아 처리하는 역할
+```
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-  },
-  target: 'node'
+  module: {
+    rules: [loader1, loader2]
+  }
 }
 ```
-
 ### Redux
 
 **- keyword**
