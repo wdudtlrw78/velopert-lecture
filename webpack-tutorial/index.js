@@ -4,8 +4,10 @@
 3. 공식을 통해 결과 얻기
 */
 
-// const { getCircleArea } = require('./mathUtil');
+// commonJS
+const { getCircleArea } = require('./mathUtil');
 
+// ESM
 import { getCircleArea } from './mathUtil';
 
 const result = getCircleArea(2);
