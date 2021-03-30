@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './index.js',
@@ -20,9 +21,21 @@ module.exports = {
             }
           }
         ]
-      }
+      }, {
+        test: /\.hbs$/,
+        use: ['handlebars-loader'],
+      },
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Webpack',
+      template: './template.hbs',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1.0',
+      }
+    })
+  ],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
