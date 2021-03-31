@@ -3,7 +3,7 @@ import styles from './index.css';
 
 function component() {
   const element = document.createElement('div');
-  element.innerHTML = 'Hello Webpack';
+  element.innerHTML = 'Hello Webpack3';
 
   console.log(styles);
   element.classList = styles.helloWebpack;

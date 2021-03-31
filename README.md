@@ -108,6 +108,28 @@ module.exports = {
 - `Caching`에는 여러가지의 종류들이 있고 이중 `Local Cache`은 사용자가 서버에 접속하는 환경의 `Cache`를 의미
   - 웹어플리케이션 서비스를 사용하기 위해서 브라우저를 이용할경우 브라우저 담긴 `Cache`가 `local Cache`에 해당된다
 
+**Webpack을 통해 Caching을 효과적으로 이용하는 방법**
+- 모듈들을 번들파일로 만들면 브라우저는 번들파일을 받고 웹어플리케이션을 동작시킨다.
+- 지금까지 생성된 파일 기준으로 번들파일을 만들게 되면 브라우저는 같은이름으로 번들파일을 호출하게 된다.
+- 브라우저가 `Caching`을 위반하는 규정은 `url`이다. 로드하는 리소스 이름이 같을경우 `Caching`을 이용하기 때문에 이전 파일이 호출된 결과로 보여지게 된다.
+- 파일을 수정했을 경우 마치 수정이 안된것처럼 보인다.
+- 이러한 문제를 방지하기 위해 번들파일의 이름에 `hash`값을 붙이는 것이다.
+- 파일이 번들링 될 때만 `hash`값을 변경하는 것이다.
+- 그러면 번들링이 되기 전까지는 같은 이름으로만 계속 사용되기 때문에 `Cache`을 이용하게 되고 수정사항이있어 코드를 수정하고 다시 번들링을 하게 되었을때 `hash`값이 바뀌기 때문에 `Cache`을 이용하지 않고 다시 새로운 번들파일을 로드하게 된다.
+  1. hash
+  ```
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+  module.exports = {
+    plugins: [
+    new CleanWebpackPlugin(),
+  ],
+  output: {
+    filename: 'bundle.[hash].js',
+  },
+  }
+  ```
+  2. content hash
+  3. chunk hash
 ### Redux
 
 **- keyword**
