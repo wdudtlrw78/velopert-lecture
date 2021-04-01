@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserWebpackplugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: './index.js',
@@ -15,9 +17,9 @@ module.exports = {
           //   options: {
           //     injectType: 'singletonStyleTag',
           //   },
-          // },
+          // }, 충돌로 인해 주석 (MiniCssExtractPlugin)
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: 'css-loader',
@@ -35,7 +37,15 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[contenthash].css'
+      filename: '[contenthash].css',
+    }),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }],
+      },
+      canPrint: true,
     }),
     new HtmlWebpackPlugin({
       title: 'Webpack',
@@ -43,12 +53,35 @@ module.exports = {
       meta: {
         viewport: 'width=device-width, initial-scale=1.0',
       },
+      minify: {
+        collapseWhitespace: true,
+        useShortDoctype: true,
+        removeScriptTypeAttributes: true,
+      },
     }),
     new CleanWebpackPlugin(),
   ],
   output: {
-    filename: 'bundle.[hash].js',
+    filename: '[name].[chunkhash].js',
     path: path.resolve(__dirname, 'dist'),
+  },
+  optimization: {
+    runtimeChunk: {
+      name: 'runtime',
+    },
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'venders',
+          chunks: 'all',
+        },
+      },
+    },
+    minimize: true,
+    minimizer: [new TerserWebpackplugin({
+      cache: true,
+    })],
   },
   mode: 'none',
 };

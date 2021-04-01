@@ -129,7 +129,101 @@ module.exports = {
   }
   ```
   2. content hash
+  ```
+  const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+   module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          // {
+          //   loader: 'style-loader',
+          //   options: {
+          //     injectType: 'singletonStyleTag',
+          //   },
+          // }, 충돌로 인해 주석 (MiniCssExtractPlugin)
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+    plugins: [
+      new MiniCssExtractPlugin({
+      filename: '[contenthash].css'
+      }),
+        ]
+  ```
   3. chunk hash
+  ```
+  output: {
+    filename: '[name].[chunkhash].js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  optimization: {
+    runtimeChunk: {
+      name: 'runtime'
+    },
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'venders',
+          chunks: 'all',
+        }
+      }
+    }
+  },
+  ```
+
+**Minification & Mangling**
+- 네트워크를 통해 전송되는 양이 커지면 사용자들에게 전달되는 콘텐츠의 도착 시간들이 늦어지게 되어서 소스코드와 리소스들의 최적화가 필요하다 
+
+- 불필요한 코드들 (주석, console 등)을 제거하여 어플리케이션에만 필요한 코드들만 남게되어서 용량을 축소할 수 있다.
+
+- `Mangle`: 표현의 난독화 - 변수 class 함수 등 한 두글자로 치환하는 과정 ( 분석하기가 어려움, 소스코드 압축)
+
+  - `HTML` 문서 최적화 // https://github.com/jantimon/html-webpack-plugin#minification
+  ```
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Webpack',
+      template: './template.hbs',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1.0',
+      },
+      minify: {
+        collapseWhitespace: true,
+        useShortDoctype: true,
+        removeScriptTypeAttributes: true,
+      },
+    }),
+  ],
+  ```
+  - CSS 최적화 
+https://cssnano.co/
+https://github.com/NMFR/optimize-css-assets-webpack-plugin
+```
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+plugins: [
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }],
+      },
+      canPrint: true,
+    }),
+  ],
+  ```
+  - JavaSciprt 최적화 
+    - `terser`
+    ```
+    const TerserWebpackplugin = require('terser-webpack-plugin');
+    optimization: {
+    minimize: true,
+    minimizer: [new TerserWebpackplugin({
+      cache: true,
+    })],
+  },
+    ```
 ### Redux
 
 **- keyword**
